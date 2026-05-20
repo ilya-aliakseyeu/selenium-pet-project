@@ -2,6 +2,7 @@ import com.google.inject.Inject;
 import common.BaseTest;
 import org.testng.Assert;
 import org.testng.annotations.Test;
+import pages.CustomerLoginPage;
 import pages.HomePage;
 
 public class HomePageTest extends BaseTest {
@@ -9,12 +10,14 @@ public class HomePageTest extends BaseTest {
   @Inject
   private HomePage homePage;
 
-  @Test
-  public void testMainScreen() {
-    String title = homePage.open().getTitle();
+  @Inject
+  private CustomerLoginPage customerLoginPage;
 
-    Assert.assertEquals(title, "Все ключевые навыки\n" +
-        "для роста в IT\n" +
-        "от профессионалов");
+
+  @Test
+  public void testOpenCustomerLoginPage() {
+    boolean isUserSelect = homePage.open().customerLoginButtonClick().userSelectIsDisplayed();
+
+    Assert.assertTrue(isUserSelect);
   }
 }
