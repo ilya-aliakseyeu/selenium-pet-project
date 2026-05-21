@@ -1,24 +1,39 @@
 package pages;
 
 
-import listeners.TestListener;
+import com.google.inject.Inject;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.testng.annotations.Listeners;
+import org.openqa.selenium.support.ui.Select;
+import utils.WaitUtils;
 
 
-@Listeners(TestListener.class)
-public class CustomerLoginPage {
+public class CustomerLoginPage extends BasePage {
 
-  public CustomerLoginPage(WebDriver driver) {
-    super(driver);
-  }
+    @FindBy(name = "userSelect")
+    private WebElement userSelectMenu;
 
-  @FindBy(name = "userSelect")
-  private WebElement userSelectMenu;
+    @FindBy(xpath = "//button[@type = 'submit']")
+    private WebElement loginButton;
 
-  public boolean userSelectIsDisplayed() {
-    return userSelectMenu.isDisplayed();
-  }
+    @Inject
+    public CustomerLoginPage(WebDriver driver, WaitUtils waitUtils) {
+        super(driver, waitUtils);
+    }
+
+    public CustomerLoginPage selectCustomer(String option) {
+
+        waitUtils.waitForVisibility(userSelectMenu);
+
+        new Select(userSelectMenu).selectByVisibleText(option);
+
+        return this;
+    }
+
+    public CustomerPage clickLoginButton() {
+        loginButton.click();
+
+        return new CustomerPage(driver, waitUtils);
+    }
 }
