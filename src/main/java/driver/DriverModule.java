@@ -10,14 +10,14 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.events.EventFiringDecorator;
 
 public class DriverModule extends AbstractModule {
-    @Provides
-    @Singleton
-    public WebDriver provideWebDriver() {
-        WebDriverManager.chromedriver().setup();
-        WebDriver driver = new ChromeDriver();
+  @Provides
+  @Singleton
+  public WebDriver provideWebDriver() {
+    WebDriverManager.chromedriver().setup();
+    WebDriver driver = new ChromeDriver();
 
-        HighlightListener listener = new HighlightListener(driver);
-        return new EventFiringDecorator(listener).decorate(driver);
+    HighlightListener listener = new HighlightListener(driver);
+    return new EventFiringDecorator(listener).decorate(driver);
 
-    }
+  }
 }
