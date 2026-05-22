@@ -13,7 +13,6 @@ public class BasePage {
   protected Injector injector;
 
 
-
   public BasePage(WebDriver driver, WaitUtils waitUtils, Injector injector) {
     this.driver = driver;
     this.waitUtils = waitUtils;

@@ -12,25 +12,26 @@ import utils.WaitUtils;
 
 public class CustomerLoginPage extends BasePage {
 
-    @FindBy(name = "userSelect")
-    private WebElement userSelectMenu;
+  @FindBy(name = "userSelect")
+  private WebElement userSelectMenu;
 
-    @FindBy(xpath = "//button[@type = 'submit']")
-    private WebElement loginButton;
+  @FindBy(xpath = "//button[@type = 'submit']")
+  private WebElement loginButton;
 
-    @Inject
-    public CustomerLoginPage(WebDriver driver, WaitUtils waitUtils, Injector injector) {
-        super(driver, waitUtils, injector);
-    }
+  @Inject
+  public CustomerLoginPage(WebDriver driver, WaitUtils waitUtils, Injector injector) {
+    super(driver, waitUtils, injector);
+  }
 
-    public CustomerLoginPage selectCustomer(String option) {
-        waitUtils.waitForVisibility(userSelectMenu);
-        new Select(userSelectMenu).selectByVisibleText(option);
-        return this;
-    }
+  public CustomerLoginPage selectCustomer(String option) {
+    waitUtils.waitForVisibility(userSelectMenu);
+    new Select(userSelectMenu).selectByVisibleText(option);
+    return this;
+  }
 
-    public CustomerPage clickLoginButton() {
-        loginButton.click();
-        return navigateTo(CustomerPage.class);
-    }
+  public CustomerPage clickLoginButton() {
+    loginButton.click();
+    waitUtils.waitForVisibility(loginButton);
+    return navigateTo(CustomerPage.class);
+  }
 }
