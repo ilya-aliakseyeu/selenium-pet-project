@@ -2,6 +2,7 @@ package pages;
 
 
 import com.google.inject.Inject;
+import com.google.inject.Injector;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -18,22 +19,18 @@ public class CustomerLoginPage extends BasePage {
     private WebElement loginButton;
 
     @Inject
-    public CustomerLoginPage(WebDriver driver, WaitUtils waitUtils) {
-        super(driver, waitUtils);
+    public CustomerLoginPage(WebDriver driver, WaitUtils waitUtils, Injector injector) {
+        super(driver, waitUtils, injector);
     }
 
     public CustomerLoginPage selectCustomer(String option) {
-
         waitUtils.waitForVisibility(userSelectMenu);
-
         new Select(userSelectMenu).selectByVisibleText(option);
-
         return this;
     }
 
     public CustomerPage clickLoginButton() {
         loginButton.click();
-
-        return new CustomerPage(driver, waitUtils);
+        return navigateTo(CustomerPage.class);
     }
 }

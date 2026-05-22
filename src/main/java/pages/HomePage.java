@@ -1,6 +1,7 @@
 package pages;
 
 import com.google.inject.Inject;
+import com.google.inject.Injector;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -18,8 +19,8 @@ public class HomePage extends BasePage {
   private WebElement managerLoginButton;
 
   @Inject
-  public HomePage(WebDriver driver, WaitUtils waitUtils) {
-    super(driver, waitUtils);
+  public HomePage(WebDriver driver, WaitUtils waitUtils, Injector injector) {
+    super(driver, waitUtils, injector);
   }
 
   public HomePage open() {
@@ -28,13 +29,8 @@ public class HomePage extends BasePage {
     return this;
   }
 
-  public String getTitle() {
-    return driver.findElement(By.tagName("h1")).getText();
-  }
-
   public CustomerLoginPage customerLoginButtonClick() {
     waitUtils.waitForClickable(customerLoginButton).click();
-
-    return new CustomerLoginPage(driver, waitUtils);
+    return navigateTo(CustomerLoginPage.class);
   }
 }
