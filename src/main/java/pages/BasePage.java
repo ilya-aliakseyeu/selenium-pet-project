@@ -1,7 +1,9 @@
 package pages;
 
 import com.google.inject.Injector;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.PageFactory;
 import utils.WaitUtils;
 
@@ -26,5 +28,13 @@ public class BasePage {
 
   protected <T extends BasePage> T navigateTo(Class<T> pageClass) {
     return injector.getInstance(pageClass);
+  }
+
+  public String getValidationMessage(WebElement element) {
+    return (String) ((JavascriptExecutor) driver).executeScript("return arguments[0].validationMessage", element);
+  }
+
+  public String getAlertMessage() {
+    return driver.switchTo().alert().getText();
   }
 }
