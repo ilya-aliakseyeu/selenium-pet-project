@@ -3,14 +3,31 @@ package tests;
 import com.google.inject.Inject;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
+import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
+import pages.CustomerLoginPage;
+import pages.CustomerPage;
 import pages.HomePage;
+import listeners.TestListener;
+
+import java.util.Random;
 
 
+@Listeners(TestListener.class)
 public class CustomerTest {
 
   @Inject
   public HomePage homePage;
+
+  @Inject
+  public CustomerPage customerPage;
+
+  @Inject
+  public CustomerLoginPage customerLoginPage;
+
+  int amount = new Random().nextInt(1000) + 1;
+  int amountNegative = -(new Random().nextInt(1000) + 1);
+  int amountNull = 0;
 
   @DataProvider(name = "customer")
   public Object[][] customer() {
@@ -60,20 +77,98 @@ public class CustomerTest {
         .customerLoginButtonClick()
         .selectCustomer("Harry Potter")
         .clickLoginButton()
+        .clickDepositButton()
+        .sendAmount(amount)
+        .clickSubmitOperationButton()
         .getBalance();
 
-    int changedBalance = homePage.open()
+    Assert.assertTrue(customerPage.isSuccessMessage());
+    Assert.assertEquals(amount, perviosBalanceCount);
+  }
+
+  @Test
+  public void testNegativeDeposit() {
+    int newBalanceCount = homePage.open()
         .customerLoginButtonClick()
         .selectCustomer("Harry Potter")
         .clickLoginButton()
-        .sendAmount("1000")
         .clickDepositButton()
+        .sendAmount(amountNegative)
+        .clickSubmitOperationButton()
         .getBalance();
 
-    Assert.assertEquals(perviosBalanceCount, changedBalance - perviosBalanceCount);
-
-
-
-
+    Assert.assertFalse(customerPage.isSuccessMessage());
+    Assert.assertEquals(0, newBalanceCount);
   }
+
+  @Test
+  public void testNullDeposit() {
+    int newBalanceCount = homePage.open()
+        .customerLoginButtonClick()
+        .selectCustomer("Harry Potter")
+        .clickLoginButton()
+        .clickDepositButton()
+        .sendAmount(amountNull)
+        .clickSubmitOperationButton()
+        .getBalance();
+
+    Assert.assertFalse(customerPage.isSuccessMessage());
+    Assert.assertEquals(0, newBalanceCount);
+  }
+
+  @Test
+  public void testWithdraw() {
+    int newBalanceCount = homePage.open()
+        .customerLoginButtonClick()
+        .selectCustomer("Harry Potter")
+        .clickLoginButton()
+        .clickWithdrawButton()
+        .sendAmount(amount - 1)
+        .clickSubmitOperationButton()
+        .getBalance();
+
+    Assert.assertTrue(customerPage.isSuccessMessage());
+    Assert.assertEquals(1, newBalanceCount);
+  }
+
+  @Test
+  public void testNegativeWithdraw() {
+    int newBalanceCount = homePage.open()
+        .customerLoginButtonClick()
+        .selectCustomer("Harry Potter")
+        .clickLoginButton()
+        .clickWithdrawButton()
+        .sendAmount(amountNegative)
+        .clickSubmitOperationButton()
+        .getBalance();
+
+    Assert.assertFalse(customerPage.isSuccessMessage());
+    Assert.assertEquals(0, newBalanceCount);
+  }
+
+  @Test
+  public void testNullWithdraw() {
+    int newBalanceCount = homePage.open()
+        .customerLoginButtonClick()
+        .selectCustomer("Harry Potter")
+        .clickLoginButton()
+        .clickWithdrawButton()
+        .sendAmount(amountNull)
+        .clickSubmitOperationButton()
+        .getBalance();
+
+    Assert.assertFalse(customerPage.isSuccessMessage());
+    Assert.assertEquals(0, newBalanceCount);
+  }
+
+//  @Test
+//  public void testLogout() {
+//    homePage.open()
+//        .customerLoginButtonClick()
+//        .selectCustomer("Harry Potter")
+//        .clickLoginButton()
+//        .clickLogoutButton();
+//
+//    Assert.assertTrue(customerLoginPage.isSelectMenuDisplayed());
+//  }
 }

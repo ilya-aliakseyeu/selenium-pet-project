@@ -18,6 +18,9 @@ public class CustomerLoginPage extends BasePage {
   @FindBy(xpath = "//button[@type = 'submit']")
   private WebElement loginButton;
 
+  @FindBy(xpath = "//div[@class = 'center']")
+  private WebElement centralBlock;
+
   @Inject
   public CustomerLoginPage(WebDriver driver, WaitUtils waitUtils, Injector injector) {
     super(driver, waitUtils, injector);
@@ -31,7 +34,11 @@ public class CustomerLoginPage extends BasePage {
 
   public CustomerPage clickLoginButton() {
     loginButton.click();
-    waitUtils.waitForVisibility(loginButton);
+    waitUtils.waitForVisibility(centralBlock);
     return navigateTo(CustomerPage.class);
+  }
+
+  public boolean isSelectMenuDisplayed() {
+    return userSelectMenu.isDisplayed();
   }
 }

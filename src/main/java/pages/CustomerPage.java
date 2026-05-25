@@ -9,6 +9,8 @@ import org.openqa.selenium.support.ui.Select;
 import org.testng.annotations.Factory;
 import utils.WaitUtils;
 
+import java.util.Random;
+
 public class CustomerPage extends BasePage {
 
   @FindBy(xpath = "//strong[contains(text(), 'Welcome')]")
@@ -20,7 +22,7 @@ public class CustomerPage extends BasePage {
   @FindBy(xpath = "//div[@class =  'center']//button[normalize-space(text()) = 'Deposit']")
   private WebElement depositButton;
 
-  @FindBy(xpath = "//button[@type = 'submit]")
+  @FindBy(xpath = "//button[@type = 'submit']")
   private WebElement submitOperationButton;
 
   @FindBy(xpath = "//input[@placeholder = 'amount']")
@@ -28,6 +30,12 @@ public class CustomerPage extends BasePage {
 
   @FindBy(xpath = "(//div[@class = 'center']//strong[@class = 'ng-binding'])[2]")
   private WebElement balanceField;
+
+  @FindBy(xpath = "//*[text() = 'Deposit Successful']")
+  private WebElement successMessage;
+
+  @FindBy(xpath = "//div[@class =  'center']//button[normalize-space(text()) = 'Withdrawl']")
+  private WebElement withdrawButton;
 
   @Inject
   public CustomerPage(WebDriver driver, WaitUtils waitUtils, Injector injector) {
@@ -53,17 +61,46 @@ public class CustomerPage extends BasePage {
 
   public CustomerPage clickDepositButton() {
     depositButton.click();
-    waitUtils.waitForClickable(submitOperationButton);
+    waitUtils.waitForVisibility(amountField);
     return this;
   }
 
-  public CustomerPage sendAmount(String amount) {
-    amountField.sendKeys(amount);
+  public CustomerPage clickSubmitOperationButton() {
+    submitOperationButton.click();
+    return this;
+  }
+
+  public CustomerPage sendAmount(int amount) {
+    amountField.sendKeys(String.valueOf(amount));
     return this;
   }
 
   public int getBalance() {
+    waitUtils.waitForVisibility(balanceField);
     String balanceString = balanceField.getText();
     return Integer.parseInt(balanceString);
+  }
+
+
+  public boolean isSuccessMessage() {
+    try {
+      waitUtils.waitForVisibility(successMessage);
+      return successMessage.isDisplayed();
+    } catch (Exception e) {
+      return false;
+    }
+  }
+
+  public CustomerPage clickWithdrawButton() {
+    withdrawButton.click();
+    waitUtils.waitForVisibility(amountField);
+    return this;
+  }
+
+  public CustomerPage doDeposit(String amount) {
+        clickDepositButton()
+        .sendAmount(Integer.parseInt(amount))
+        .clickSubmitOperationButton();
+        return this;
   }
 }
