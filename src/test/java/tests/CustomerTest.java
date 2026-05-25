@@ -3,13 +3,10 @@ package tests;
 import com.google.inject.Inject;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
-import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 import pages.HomePage;
-import listeners.TestListener;
 
 
-@Listeners(TestListener.class)
 public class CustomerTest {
 
   @Inject

@@ -18,6 +18,9 @@ public class HomePage extends BasePage {
   @FindBy(xpath = "//button[@ng-click = 'manager()']")
   private WebElement managerLoginButton;
 
+  @FindBy(className = "center")
+  private WebElement centralBlock;
+
   @Inject
   public HomePage(WebDriver driver, WaitUtils waitUtils, Injector injector) {
     super(driver, waitUtils, injector);
@@ -32,5 +35,11 @@ public class HomePage extends BasePage {
   public CustomerLoginPage customerLoginButtonClick() {
     waitUtils.waitForClickable(customerLoginButton).click();
     return navigateTo(CustomerLoginPage.class);
+  }
+
+  public ManagerPage clickManagerLoginButton() {
+    managerLoginButton.click();
+    waitUtils.waitForVisibility(centralBlock);
+    return navigateTo(ManagerPage.class);
   }
 }
