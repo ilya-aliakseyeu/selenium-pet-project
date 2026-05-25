@@ -34,7 +34,7 @@ public class BasePage {
     return (String) ((JavascriptExecutor) driver).executeScript("return arguments[0].validationMessage", element);
   }
 
-  public String getAlertMessage(WebElement element) {
+  public String getAlertMessage() {
     return driver.switchTo().alert().getText();
   }
 }

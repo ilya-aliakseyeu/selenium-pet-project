@@ -71,6 +71,8 @@ public class ManagerTest {
         .sendLNameField("TestLName")
         .sendPCodeField("TestPCode")
         .clickSubmitOperationButton()
-        .getAlertMessage()
+        .getAlertMessage();
+
+    Assert.assertTrue(message.contains("Customer added successfully with customer id :"));
   }
 }
