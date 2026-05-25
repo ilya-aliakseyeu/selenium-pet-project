@@ -38,8 +38,7 @@ public class HomePage extends BasePage {
   }
 
   public ManagerPage clickManagerLoginButton() {
-    managerLoginButton.click();
-    waitUtils.waitForVisibility(centralBlock);
+    waitUtils.waitForClickable(managerLoginButton).click();
     return navigateTo(ManagerPage.class);
   }
 }
