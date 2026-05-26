@@ -3,8 +3,7 @@ package tests;
 import com.google.inject.Inject;
 import listeners.TestListener;
 import org.testng.Assert;
-import org.testng.annotations.Listeners;
-import org.testng.annotations.Test;
+import org.testng.annotations.*;
 import pages.HomePage;
 
 import java.util.List;
@@ -61,18 +60,87 @@ public class ManagerTest {
     Assert.assertFalse(message.isEmpty());
   }
 
-  @Test
-  public void testAddCustomer() {
+  @Test()
+  @Parameters({"fname", "lname", "pcode"})
+  public void testAddCustomer(String fname, String lname, String pcode) {
     String message = homePage
         .open()
         .clickManagerLoginButton()
         .clickAddCustomerButton()
-        .sendFNameField("TestName")
-        .sendLNameField("TestLName")
-        .sendPCodeField("TestPCode")
+        .sendFNameField(fname)
+        .sendLNameField(lname)
+        .sendPCodeField(pcode)
         .clickSubmitOperationButton()
         .getAlertMessage();
 
     Assert.assertTrue(message.contains("Customer added successfully with customer id :"));
+  }
+
+//  @Test(dependsOnMethods = "testAddCustomer")
+//  public void testOpenAddedAccount() {
+//    String message = homePage
+//        .open()
+//        .clickManagerLoginButton()
+//        .clickOpenAccountButton()
+//        .selectCustomer("Test Name" + " " + "TestName2")
+//        .selectCurrency("Dollar")
+//        .getAlertMessage();
+//
+//    Assert.assertTrue(message.contains("Account created successfully with account Number :"));
+//  }
+
+  @BeforeMethod(onlyForGroups = "requiresUser")
+  @Parameters({"fname", "lname", "pcode"})
+  public void createTestUser(String fname, String lname, String pcode) {
+    homePage.open()
+        .clickManagerLoginButton()
+        .clickAddCustomerButton()
+        .sendFNameField(fname)
+        .sendLNameField(lname)
+        .sendPCodeField(pcode)
+        .clickSubmitOperationButton()
+        .acceptAlert();
+  }
+
+  @Test(groups = "requiresUser")
+  @Parameters({"fname", "lname", "pcode"}) // TODO - PROBLEM HERE
+  public void testOpenAddedAccount(String fname, String lname, String pcode) {
+    String message = homePage
+        .open()
+        .clickManagerLoginButton()
+        .clickOpenAccountButton()
+        .selectCustomer(fname + " " + lname) // TODO - delete hardcode
+        .selectCurrency("Dollar")
+        .clickSubmitOperationButton()
+        .getAlertMessage();
+
+    Assert.assertTrue(message.contains("Account created successfully with account Number :"));
+  }
+
+  @Test
+  public void testEmptyFieldAddCustomer() {
+    String message = homePage
+        .open()
+        .clickManagerLoginButton()
+        .clickOpenAccountButton()
+        .clickSubmitOperationButton()
+        .getValidationMessageSelect();
+
+    Assert.assertFalse(message.isEmpty());
+  }
+
+  @Test(groups = "requiresUser")
+  @Parameters({"fname", "lname", "pcode"})
+  public void testSearchAddedCustomer(String fname, String lname, String pcode) {
+    List<String> elements = homePage
+        .open()
+        .clickManagerLoginButton()
+        .clickCustomersButton()
+        .sendSearchField(fname)
+        .getUserElements();
+
+    List<String> initialsUserParams = List.of(fname, lname, pcode);
+
+    Assert.assertEquals(initialsUserParams, elements);
   }
 }

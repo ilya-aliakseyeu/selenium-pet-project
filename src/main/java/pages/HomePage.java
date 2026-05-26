@@ -2,7 +2,6 @@ package pages;
 
 import com.google.inject.Inject;
 import com.google.inject.Injector;
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -10,7 +9,7 @@ import utils.WaitUtils;
 
 public class HomePage extends BasePage {
 
-  private static final String URL = "https://www.globalsqa.com/angularJs-protractor/BankingProject/#/login";
+  private static final String BASE_URL = "https://www.globalsqa.com/angularJs-protractor/BankingProject/#/login";
 
   @FindBy(xpath = "//button[@ng-click = 'customer()']")
   private WebElement customerLoginButton;
@@ -27,7 +26,7 @@ public class HomePage extends BasePage {
   }
 
   public HomePage open() {
-    driver.get(URL);
+    driver.get(BASE_URL);
     return this;
   }
 
@@ -38,6 +37,7 @@ public class HomePage extends BasePage {
 
   public ManagerPage clickManagerLoginButton() {
     waitUtils.waitForClickable(managerLoginButton).click();
+    waitUtils.waitForVisibility(centralBlock);
     return navigateTo(ManagerPage.class);
   }
 }
