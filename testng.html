@@ -2,6 +2,11 @@
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
 <suite name="Suite">
     <test name="Tests">
+        <parameter name="baseUrl" value="https://www.globalsqa.com/angularJs-protractor/BankingProject/#/login"/> // - TODO AND HERE
+        <parameter name="fname" value="TestFName"/>
+        <parameter name="lname" value="TestLName"/>
+        <parameter name="pcode" value="TestPCode"/>
+
         <classes>
             <class name="tests.CustomerTest"/>
         </classes>

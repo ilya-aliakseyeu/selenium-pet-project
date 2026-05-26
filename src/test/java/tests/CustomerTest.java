@@ -17,7 +17,7 @@ import java.util.Random;
 public class CustomerTest {
 
   @Inject
-  public HomePage homePage;
+  public HomePage homePage; // TODO рефактор с новым @BeforeMethod(group)
 
   @Inject
   public CustomerPage customerPage;

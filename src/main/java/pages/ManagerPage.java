@@ -2,12 +2,16 @@ package pages;
 
 import com.google.inject.Inject;
 import com.google.inject.Injector;
+import org.checkerframework.checker.formatter.qual.Format;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.ui.Select;
 import utils.WaitUtils;
+
 import java.util.List;
 import java.util.stream.Collectors;
+
 public class ManagerPage extends BasePage {
 
   @FindBy(className = "center")
@@ -30,6 +34,24 @@ public class ManagerPage extends BasePage {
 
   @FindBy(xpath = "//input[@ng-model = 'postCd']")
   private WebElement inputPCode;
+
+  @FindBy(xpath = "//button[@ng-click = 'openAccount()']")
+  private WebElement openAccountButton;
+
+  @FindBy(name = "userSelect")
+  private WebElement userSelectMenu;
+
+  @FindBy(name = "currency")
+  private WebElement currencySelectMenu;
+
+  @FindBy(xpath = "//button[normalize-space(text()) = 'Customers']")
+  private WebElement customersButton;
+
+  @FindBy(xpath = "//input[@ng-model = 'searchCustomer']")
+  private WebElement searchField;
+
+  @FindBy(className = "ng-binding")
+  private List<WebElement> userParams;
 
   @Inject
   public ManagerPage(WebDriver driver, WaitUtils waitUtils, Injector injector) {
@@ -58,6 +80,11 @@ public class ManagerPage extends BasePage {
     return this;
   }
 
+  public ManagerPage acceptAlert() {
+    driver.switchTo().alert().accept();
+    return this;
+  }
+
   public String getValidationMessageInput() {
     return getValidationMessage(inputFName);
   }
@@ -75,5 +102,44 @@ public class ManagerPage extends BasePage {
   public ManagerPage sendPCodeField(String symbols) {
     inputPCode.sendKeys(symbols);
     return this;
+  }
+
+  public ManagerPage clickOpenAccountButton() {
+    waitUtils.waitForClickable(openAccountButton).click();
+    waitUtils.waitForVisibility(submitOperationButton);
+    return this;
+  }
+
+  public ManagerPage selectCustomer(String option) {
+    waitUtils.waitForVisibility(userSelectMenu);
+    new Select(userSelectMenu).selectByVisibleText(option);
+    return this;
+  }
+
+  public ManagerPage selectCurrency(String value) {
+    waitUtils.waitForVisibility(currencySelectMenu);
+    new Select(currencySelectMenu).selectByValue(value);
+    return this;
+  }
+
+  public String getValidationMessageSelect() {
+    return getValidationMessage(userSelectMenu);
+  }
+
+  public ManagerPage clickCustomersButton() {
+    waitUtils.waitForClickable(customersButton).click();
+    waitUtils.waitForVisibility(searchField);
+    return this;
+  }
+
+  public ManagerPage sendSearchField(String symbols) {
+    searchField.sendKeys(symbols);
+    return this;
+  }
+
+  public List<String> getUserElements() {
+    return userParams.stream()
+        .map(WebElement::getText)
+        .collect(Collectors.toList());
   }
 }
