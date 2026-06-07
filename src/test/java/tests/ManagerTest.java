@@ -76,18 +76,18 @@ public class ManagerTest {
     Assert.assertTrue(message.contains("Customer added successfully with customer id :"));
   }
 
-//  @Test(dependsOnMethods = "testAddCustomer")
-//  public void testOpenAddedAccount() {
-//    String message = homePage
-//        .open()
-//        .clickManagerLoginButton()
-//        .clickOpenAccountButton()
-//        .selectCustomer("Test Name" + " " + "TestName2")
-//        .selectCurrency("Dollar")
-//        .getAlertMessage();
-//
-//    Assert.assertTrue(message.contains("Account created successfully with account Number :"));
-//  }
+  @Test(dependsOnMethods = "testAddCustomer")
+  public void testOpenAddedAccount() {
+    String message = homePage
+        .open()
+        .clickManagerLoginButton()
+        .clickOpenAccountButton()
+        .selectCustomer("Test Name" + " " + "TestName2")
+        .selectCurrency("Dollar")
+        .getAlertMessage();
+
+    Assert.assertTrue(message.contains("Account created successfully with account Number :"));
+  }
 
   @BeforeMethod(onlyForGroups = "requiresUser")
   @Parameters({"fname", "lname", "pcode"})
@@ -103,13 +103,13 @@ public class ManagerTest {
   }
 
   @Test(groups = "requiresUser")
-  @Parameters({"fname", "lname", "pcode"}) // TODO - PROBLEM HERE
+  @Parameters({"fname", "lname", "pcode"})
   public void testOpenAddedAccount(String fname, String lname, String pcode) {
     String message = homePage
         .open()
         .clickManagerLoginButton()
         .clickOpenAccountButton()
-        .selectCustomer(fname + " " + lname) // TODO - delete hardcode
+        .selectCustomer(fname + " " + lname)
         .selectCurrency("Dollar")
         .clickSubmitOperationButton()
         .getAlertMessage();

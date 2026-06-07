@@ -6,10 +6,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.Select;
-import org.testng.annotations.Factory;
 import utils.WaitUtils;
-
-import java.util.Random;
 
 public class CustomerPage extends BasePage {
 
@@ -36,6 +33,12 @@ public class CustomerPage extends BasePage {
 
   @FindBy(xpath = "//div[@class =  'center']//button[normalize-space(text()) = 'Withdrawl']")
   private WebElement withdrawButton;
+
+  @FindBy(xpath = "//button[@ng-click = 'byebye()']")
+  private WebElement logoutButton;
+
+  @FindBy(id = "userSelect")
+  private WebElement userSelectMenu;
 
   @Inject
   public CustomerPage(WebDriver driver, WaitUtils waitUtils, Injector injector) {
@@ -97,10 +100,10 @@ public class CustomerPage extends BasePage {
     return this;
   }
 
-  public CustomerPage doDeposit(String amount) {
-        clickDepositButton()
-        .sendAmount(Integer.parseInt(amount))
-        .clickSubmitOperationButton();
-        return this;
+  public CustomerLoginPage clickLogoutButton() {
+    logoutButton.click();
+    waitUtils.waitForVisibility(userSelectMenu);
+
+    return navigateTo(CustomerLoginPage.class);
   }
 }

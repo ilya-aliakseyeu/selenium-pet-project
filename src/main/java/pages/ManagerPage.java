@@ -2,13 +2,11 @@ package pages;
 
 import com.google.inject.Inject;
 import com.google.inject.Injector;
-import org.checkerframework.checker.formatter.qual.Format;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.Select;
 import utils.WaitUtils;
-
 import java.util.List;
 import java.util.stream.Collectors;
 

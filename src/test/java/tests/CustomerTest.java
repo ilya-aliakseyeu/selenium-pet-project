@@ -4,6 +4,7 @@ import com.google.inject.Inject;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Listeners;
+import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 import pages.CustomerLoginPage;
 import pages.CustomerPage;
@@ -17,7 +18,7 @@ import java.util.Random;
 public class CustomerTest {
 
   @Inject
-  public HomePage homePage; // TODO рефактор с новым @BeforeMethod(group)
+  public HomePage homePage;
 
   @Inject
   public CustomerPage customerPage;
@@ -72,6 +73,7 @@ public class CustomerTest {
 
 
   @Test
+  @Parameters({"HPotter"})
   public void testMakeDeposit() {
     int perviosBalanceCount = homePage.open()
         .customerLoginButtonClick()
@@ -98,7 +100,7 @@ public class CustomerTest {
         .getBalance();
 
     Assert.assertFalse(customerPage.isSuccessMessage());
-    Assert.assertEquals(0, newBalanceCount);
+    Assert.assertEquals(newBalanceCount, 0);
   }
 
   @Test
@@ -113,7 +115,7 @@ public class CustomerTest {
         .getBalance();
 
     Assert.assertFalse(customerPage.isSuccessMessage());
-    Assert.assertEquals(0, newBalanceCount);
+    Assert.assertEquals(newBalanceCount, 0);
   }
 
   @Test
@@ -128,7 +130,7 @@ public class CustomerTest {
         .getBalance();
 
     Assert.assertTrue(customerPage.isSuccessMessage());
-    Assert.assertEquals(1, newBalanceCount);
+    Assert.assertEquals(newBalanceCount, 1);
   }
 
   @Test
@@ -143,7 +145,7 @@ public class CustomerTest {
         .getBalance();
 
     Assert.assertFalse(customerPage.isSuccessMessage());
-    Assert.assertEquals(0, newBalanceCount);
+    Assert.assertEquals(newBalanceCount, 0);
   }
 
   @Test
@@ -158,17 +160,17 @@ public class CustomerTest {
         .getBalance();
 
     Assert.assertFalse(customerPage.isSuccessMessage());
-    Assert.assertEquals(0, newBalanceCount);
+    Assert.assertEquals(newBalanceCount, 0);
   }
 
-//  @Test
-//  public void testLogout() {
-//    homePage.open()
-//        .customerLoginButtonClick()
-//        .selectCustomer("Harry Potter")
-//        .clickLoginButton()
-//        .clickLogoutButton();
-//
-//    Assert.assertTrue(customerLoginPage.isSelectMenuDisplayed());
-//  }
+  @Test
+  public void testLogout() {
+    homePage.open()
+        .customerLoginButtonClick()
+        .selectCustomer("Harry Potter")
+        .clickLoginButton()
+        .clickLogoutButton();
+
+    Assert.assertTrue(customerLoginPage.isSelectMenuDisplayed());
+  }
 }
