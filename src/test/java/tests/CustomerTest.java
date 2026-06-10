@@ -4,7 +4,6 @@ import com.google.inject.Inject;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Listeners;
-import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 import pages.CustomerLoginPage;
 import pages.CustomerPage;
@@ -73,7 +72,6 @@ public class CustomerTest {
 
 
   @Test
-  @Parameters({"HPotter"})
   public void testMakeDeposit() {
     int perviosBalanceCount = homePage.open()
         .customerLoginButtonClick()
