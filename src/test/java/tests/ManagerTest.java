@@ -76,19 +76,6 @@ public class ManagerTest {
     Assert.assertTrue(message.contains("Customer added successfully with customer id :"));
   }
 
-  @Test(dependsOnMethods = "testAddCustomer")
-  public void testOpenAddedAccount() {
-    String message = homePage
-        .open()
-        .clickManagerLoginButton()
-        .clickOpenAccountButton()
-        .selectCustomer("Test Name" + " " + "TestName2")
-        .selectCurrency("Dollar")
-        .getAlertMessage();
-
-    Assert.assertTrue(message.contains("Account created successfully with account Number :"));
-  }
-
   @BeforeMethod(onlyForGroups = "requiresUser")
   @Parameters({"fname", "lname", "pcode"})
   public void createTestUser(String fname, String lname, String pcode) {

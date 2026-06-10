@@ -30,6 +30,9 @@ public class TestListener implements IInvokedMethodListener {
 
   @Override
   public void afterInvocation(IInvokedMethod method, ITestResult testResult) {
+    if (driver != null) { // - тут проверяем завершен ли тест и нужен ли драйвер
+      driver.quit();
+    }
     if (method.isTestMethod()) { // - проверяем, является ли метод аннотацией с @Test, а не вспомогательным вроде @AfterMethod или @BeforeMethod
       injectors.remove(testResult.getInstance()); // - если это @test - удаляем инжектор для этого экземпляра, тк тест завершен
       if (driver != null) { // - тут проверяем завершен ли тест и нужен ли драйвер
