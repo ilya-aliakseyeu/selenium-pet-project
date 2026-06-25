@@ -1,0 +1,29 @@
+services:
+  selenoid:
+    image: aerokube/selenoid:latest
+    container_name: selenoid
+    ports:
+      - "4444:4444"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./selenoid:/etc/selenoid
+    environment:
+      - DOCKER_API_VERSION=1.40
+    command: ["-container-network", "selenium-pet-project_selenoid-network"]
+    networks:
+      - selenoid-network
+
+  selenoid-ui:
+    image: aerokube/selenoid-ui:latest
+    container_name: selenoid-ui
+    ports:
+      - "8080:8080"
+    command: ["--selenoid-uri", "http://selenoid:4444"]
+    depends_on:
+      - selenoid
+    networks:
+      - selenoid-network
+
+networks:
+  selenoid-network:
+    driver: bridge

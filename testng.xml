@@ -6,8 +6,9 @@
         <parameter name="fname" value="TestFName"/>
         <parameter name="lname" value="TestLName"/>
         <parameter name="pcode" value="TestPCode"/>
-        <packages>
-            <package name="com.hello-selenium-project.test.java.tests"/>
-        </packages>
+        <classes>
+            <class name="tests.CustomerTest"/>
+            <class name="tests.ManagerTest"/>
+        </classes>
     </test>
 </suite>
